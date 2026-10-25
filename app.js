@@ -1,0 +1,3 @@
+const rows=[["Neon Harbor","Midnight Ferry","+3"],["Lola Vance","Paper Crowns","-1"],["The Static Pines","Low Tide","+5"],["Kairo","Gold Rush","NEW"],["Maya Sol","Slow Burn","-2"],["Velvet Arcade","Static Hearts","+1"],["Dre Okafor","Westbound","NEW"],["Juniper Ray","Glass House","-3"],["Saint Avenue","Overtime","0"],["Rue & The Loud","Echo Park","+2"]];
+document.getElementById('hot').innerHTML=rows.map(([a,s,m])=>`<li><span class="t">${s}</span><span class="a">${a}</span><span class="m">${m}</span></li>`).join('');
+const b=document.querySelector('.menu');b.onclick=()=>{const o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',o);document.getElementById('nav').classList.toggle('open',o)};
