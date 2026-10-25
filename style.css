@@ -84,3 +84,4 @@ footer{padding:64px 5vw;display:flex;flex-wrap:wrap;gap:12px 40px;align-items:en
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}*{transition:none!important}}
 @media(max-width:800px){section{padding:64px 6vw}.top{padding:12px 6vw}.menu{color:var(--plum);border-color:var(--plum);border-radius:2px}nav ul{background:#fff;border-bottom:1px solid var(--rule)}.chart li{grid-template-columns:70px 1fr 50px}.chart li:before{font-size:40px}.chart li:first-child:before{font-size:56px}.t{font-size:20px}}
 .cover{overflow:visible;padding-bottom:48px}.cv-name{bottom:0}.cv-body{overflow:hidden}
+@media(max-width:800px){.cv-name{font-size:21vw}}
