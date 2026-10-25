@@ -12,29 +12,33 @@ $('#photos').onchange=e=>{const files=[...e.target.files].filter(x=>x.type.start
 const pick=(arr,seed)=>arr[seed%arr.length];
 const paras=t=>esc(t.trim()).split(/\n\s*\n|\n/).filter(Boolean).map(p=>`<p>${p}</p>`).join('');
 const sentences=t=>(t.match(/[^.!?]+[.!?]*/g)||[]).map(s=>s.trim()).filter(s=>s.length>20&&s.length<200);
-function build(d){const seed=[...d.name].reduce((a,c)=>a+c.charCodeAt(0),0),n=esc(d.name),g=esc(d.genre),h=esc(d.hometown),three=esc(d.three);
- const heads=[`${n}, in their own words`,`Meet ${n}`,`${n} is just getting started`,`The making of ${n}`];
- const deks=[`The ${g} artist${h?' from '+h:''} on how it began, what it sounds like, and where it goes from here.`,`${three}: that's how ${n} describes the sound. Here's the story behind it.`,`A ${g} profile${h?' with roots in '+h:''}, told by the artist.`];
- const qs=[...sentences(d.proud),...sentences(d.started),...sentences(d.next)];const quote=qs.sort((a,b)=>Math.abs(a.length-90)-Math.abs(b.length-90))[0]||d.three;
- const sec=(title,txt,lead)=>txt.trim()?`<h2>${title}</h2>${lead?`<p>${lead}</p>`:''}${paras(txt)}`:'';
+function build(d){const seed=[...d.name].reduce((a,c)=>a+c.charCodeAt(0),0),n=esc(d.name),roles=esc(d.roles),g=esc(d.genre),h=esc(d.hometown);
+ const what=g||roles.toLowerCase();
+ const heads=[`${n}, in their own words`,`The rise of ${n}`,`${n} on art, purpose and what comes next`,`Meet ${n}`];
+ const deks=[`${n}${h?' of '+h:''} on how it began, the mission behind the work, and the dreams still ahead.`,`From first steps to proudest moments, ${n} tells the story behind the work.`,`A Spotlight profile${h?' with roots in '+h:''}, told by the artist.`];
+ const all=['started','mission','proud','growth','message','future','advice'].map(k=>d[k]||'').join(' ');
+ const ss=sentences(all);const short=ss.filter(s=>/^I\b/.test(s)&&s.length<110);const quote=(short[0]||ss.sort((a,b)=>a.length-b.length)[0]||d.mission).replace(/[.!]$/,'');
+ const kick=pick(['Cultural soundscape','Creative force','In the studio','On the rise'],seed);
+ const sec=(title,...ts)=>ts.some(t=>t&&t.trim())?`<h2>${title}</h2>${ts.map(t=>t?paras(t):'').join('')}`:'';
+ const ph=i=>imgs[i]?`<figure class="inline"><img src="${imgs[i]}" alt="${n}, photo ${i+1}"></figure>`:'';
+ const words=all.split(/\s+/).length,mins=Math.max(1,Math.round(words/220)),date=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
  const links=d.links.split(/\s+/).filter(Boolean).map(u=>{const url=/^https?:\/\//i.test(u)?u:(/\./.test(u)?'https://'+u:null);return url?`<li><a href="${esc(url)}" rel="noopener">${esc(u)}</a></li>`:`<li>${esc(u)}</li>`}).join('');
- return `<header class="cover"><img src="${imgs[0]}" alt="${n}"><div><p class="kicker">${g} profile</p><h1>${pick(heads,seed)}</h1><p class="dek">${pick(deks,seed)}</p><p class="byline">TalentHub Magazine artist feature</p></div></header>
-<div class="body"><div>${sec(pick(['Where it started','The beginning','First steps'],seed),d.started,`Asked how it all began, ${n} put it this way:`)}
-${sec('Three words',d.three,`Asked to sum up the music in three words, ${n} chose these:`)}
-${sec(pick(['The influences','Who shaped the sound','Heroes and inspirations'],seed+1),d.influences,`On the artists and ideas behind the music:`)}
-${sec('The latest release',d.release,`On the story behind the newest work:`)}
-${sec(pick(['The proudest moment','A moment to remember','High point'],seed+2),d.proud,'')}
-${sec('Off the record',d.secret,`Something fans might not know about ${n}:`)}
-${sec(pick(["What's next","Up next","The road ahead"],seed),d.next,'')}</div>
-<dl class="facts"><dt>Artist</dt><dd>${n}</dd><dt>Genre</dt><dd>${g}</dd>${h?`<dt>Hometown</dt><dd>${h}</dd>`:''}<dt>The sound</dt><dd>${three}</dd></dl></div>
-<blockquote>“${esc(quote)}”<br><small style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px">${n}</small></blockquote>
-${imgs.length>1?`<h2 style="padding:0 5%">Gallery</h2><div class="gallery">${imgs.slice(1).map((s,i)=>`<img src="${s}" alt="${n}, photo ${i+2}">`).join('')}</div>`:''}
-${links?`<div class="links"><h2>Find ${n}</h2><ul>${links}</ul></div>`:''}`}
+ return `<header class="cover"><img src="${imgs[0]}" alt="${n}"><div><p class="kicker">${roles}</p><h1>${pick(heads,seed)}</h1><p class="dek">${pick(deks,seed)}</p><p class="byline">${n}, ${roles}. By Spotlight, TalentHub Online. ${date}. ${mins} min read.</p></div></header>
+<div class="body"><div class="prose"><h2>${kick}</h2>${paras(d.started)}${d.growth?paras(d.growth):''}
+<blockquote class="pq">“${esc(quote)}”<cite>${n}</cite></blockquote>
+${sec(pick(['Mission behind my art','Why I create','The mission'],seed),d.mission)}${ph(1)}
+${sec(pick(['What makes me unique','My sound, my story','Where I come from'],seed+1),d.unique)}
+${sec(pick(['Staying grounded','Keeping balance','Turning points'],seed),d.grounded)}
+${sec(pick(['Daily life','A day in my life','The routine'],seed+2),d.daily)}${ph(2)}
+${sec(pick(['Milestones achieved','Proudest moments','High points'],seed),d.proud,d.message)}
+${sec(pick(['Future aspirations','On the vision board',"What's next"],seed+1),d.future,d.advice)}${ph(3)}
+${links?`<h2>Find ${n}</h2><ul>${links}</ul>`:''}</div>
+<dl class="facts"><dt>Artist</dt><dd>${n}</dd><dt>Work</dt><dd>${roles}</dd>${g?`<dt>Genre</dt><dd>${g}</dd>`:''}${h?`<dt>Hometown</dt><dd>${h}</dd>`:''}</dl></div>`}
 f.onsubmit=e=>{e.preventDefault();if(!valid())return;const d=Object.fromEntries(new FormData(f));$('#art').innerHTML=build(d);$('#builder').hidden=true;$('#result').hidden=false;scrollTo(0,0);$('#art').focus()};
 $('#ed').onclick=()=>{$('#result').hidden=true;$('#builder').hidden=false};$('#pr').onclick=()=>print();
 const say=m=>{$('#msg').textContent=m;setTimeout(()=>$('#msg').textContent='',3000)};
 $('#cp').onclick=()=>navigator.clipboard.writeText($('#art').innerText).then(()=>say('Article text copied.'),()=>say('Copy failed. Select the text and copy it manually.'));
 $('#dl').onclick=async()=>{let css='';for(const h of ['../style.css','feature.css']){try{css+=await (await fetch(h)).text()}catch(e){}}
- const name=new FormData(f).get('name').trim();const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(name)} — TalentHub Magazine</title><link href="https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,800&display=swap" rel="stylesheet"><style>${css}</style></head><body><article class="art">${$('#art').innerHTML}</article></body></html>`;
+ const name=new FormData(f).get('name').trim();const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(name)} — TalentHub Magazine</title><link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700&family=Oswald:wght@500;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet"><style>${css}</style></head><body><article class="art">${$('#art').innerHTML}</article></body></html>`;
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=(name.replace(/[^\w-]+/g,'-')||'feature')+'-talenthub-feature.html';a.click();say('Download started.')};
 show()})();
