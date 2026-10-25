@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Get featured — TalentHub Magazine</title><meta name="description" content="Answer a few questions, add photos, and get a magazine-style profile feature from TalentHub Magazine.">
+<meta property="og:title" content="Get featured in TalentHub Magazine"><meta property="og:description" content="Turn your story into a magazine profile in a few minutes.">
+<meta property="og:url" content="https://chick6194.github.io/talenthub-magazine/feature/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="feature.css"></head><body>
+<div class="notice">Private by design: your photos and answers stay in this browser. Nothing is saved or sent anywhere.</div>
+<header class="top"><a class="mast" href="../">TalentHub</a><nav aria-label="Sections"><button class="menu" aria-expanded="false" aria-controls="nav">Menu</button>
+<ul id="nav"><li><a href="../#news">News</a></li><li><a href="../#charts">Charts</a></li><li><a href="../#videos">Videos</a></li><li><a href="../#interviews">Interviews</a></li><li><a href="./" aria-current="page">Get featured</a></li></ul></nav></header>
+<main id="builder">
+<section class="intro"><h1>Tell us your story. We'll set it in print.</h1><p>Four short steps. Add 1 to 4 photos, answer the questions in your own words, and get a magazine profile you can download, print or share.</p></section>
+<form id="f" novalidate>
+<div class="progress" aria-hidden="true"><span id="bar"></span></div><p id="stepinfo" class="stepinfo" aria-live="polite"></p>
+<fieldset class="step" data-title="The basics"><legend>The basics</legend>
+<label>Name or stage name <b>required</b><input name="name" required maxlength="80"></label>
+<label>Genre <b>required</b><input name="genre" required maxlength="60" placeholder="e.g. Neo-soul, drill, country pop"></label>
+<label>Hometown <i>optional</i><input name="hometown" maxlength="80"></label>
+<div class="drop"><label for="photos">Photos, 1 to 4 <b>required</b></label><p class="hint">JPG, PNG or WebP. The first photo becomes your cover.</p>
+<input id="photos" type="file" accept="image/*" multiple><div id="previews" class="previews"></div></div></fieldset>
+<fieldset class="step" data-title="Your sound" hidden><legend>Your sound</legend>
+<label>How did you get started in music? <b>required</b><textarea name="started" required rows="4"></textarea></label>
+<label>Describe your sound in three words <b>required</b><input name="three" required maxlength="60" placeholder="e.g. Warm, restless, loud"></label>
+<label>Who are your biggest influences? <i>optional</i><textarea name="influences" rows="3"></textarea></label></fieldset>
+<fieldset class="step" data-title="Your story" hidden><legend>Your story</legend>
+<label>What's the story behind your latest release? <i>optional</i><textarea name="release" rows="4"></textarea></label>
+<label>What's your proudest moment so far? <b>required</b><textarea name="proud" required rows="4"></textarea></label>
+<label>What's something fans don't know about you? <i>optional</i><textarea name="secret" rows="3"></textarea></label></fieldset>
+<fieldset class="step" data-title="What's next" hidden><legend>What's next</legend>
+<label>What's next for you? <b>required</b><textarea name="next" required rows="4"></textarea></label>
+<label>Where can people find you? <i>optional</i><textarea name="links" rows="3" placeholder="One link per line, e.g. https://instagram.com/yourname"></textarea></label></fieldset>
+<p id="err" class="err" role="alert"></p>
+<div class="nav-btns"><button type="button" id="back" class="ghost">Back</button><button type="button" id="next">Next step</button><button type="submit" id="make" hidden>Create my feature</button></div>
+</form></main>
+<div id="result" hidden><div class="tools"><button id="dl">Download HTML</button><button id="pr">Print or save as PDF</button><button id="cp">Copy text</button><button id="ed" class="ghost">Edit answers</button><span id="msg" role="status"></span></div><article id="art" class="art" tabindex="-1"></article></div>
+<footer><a class="mast" href="../">TalentHub</a><p>A TalentHub Online publication. <a href="https://talenthubonline.com">talenthubonline.com</a></p></footer>
+<script src="../app.js"></script><script src="feature.js"></script></body></html>
